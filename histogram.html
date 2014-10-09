@@ -4,10 +4,10 @@
 <meta charset = "utf-8">
 	<style>
 
-	.bar {
+	/*.bar {
 		fill: #d63378;
 	}
-
+*/
 	.bar:hover {
 		fill: #612250;
 	}
@@ -50,6 +50,13 @@
 
 
 <body>
+
+
+	<linearGradient id = "svg_2">
+		<stop offset = "0" stop-color="#fff"/>
+		<stop offset = "1" stop-color="#00fNaN"/>
+	</linearGradient>
+
 	<script src = "http://d3js.org/d3.v3.min.js"></script>
 	
 	<script>
@@ -65,7 +72,6 @@
 		var map = data.map(function (i) { 
 			return parseInt(i.age); }); // pass as int
 		
-		//console.log(Math.max.apply(null, map));
 		
 		var histogram = d3.layout.histogram()
 			.bins(50)
@@ -139,6 +145,25 @@
 			.enter()
 			.append("g")
 			.attr("class", "bar")
+		
+		// specify gradient units are userSpaceOnUse
+		// then define region to apply gradient		
+		var gradient = bars
+			.append("linearGradient")
+			.attr("y1", maxY)
+			.attr("y2", height + padding)
+			.attr("x1", "0")
+			.attr("x2", "0")
+			.attr("id", "gradient")
+			.attr("gradientUnits", "userSpaceOnUse")
+	
+		gradient.append("stop")
+			.attr("offset", "0")
+			.attr("stop-color", "red")
+	
+		gradient.append("stop")
+			.attr("offset", "1.0")
+			.attr("stop-color", "darkblue");
 			
 		bars.append("rect")
 			.attr("x", function (d) { 
@@ -156,6 +181,7 @@
 			/*.attr("fill", function (d) {
 				return color(d);
 			})*/
+			.attr("fill", "url(#gradient)");
 			
 			
 	})
