@@ -12,5 +12,6 @@ Each bar / bin highlights with mouse over.
 Next step: 
 
 1. Calculate % / raw number for each bar when mouse over
+2. Create color gradient for bars
 2. Animate histogram (?) 
 3. Include breakdown of each bar by extra variables such as age and income of those infected (data to come)
