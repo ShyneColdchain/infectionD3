@@ -4,10 +4,10 @@
 <meta charset = "utf-8">
 	<style>
 
-	/*.bar {
+	.bar {
 		fill: #d63378;
 	}
-*/
+
 	.bar:hover {
 		fill: #612250;
 	}
@@ -44,6 +44,39 @@
 		stroke: #000;
 	}
 
+	/* d3-tip to add tooltip 
+	
+	****DIRECTLY FROM d3-tip**** 
+	*/
+	.d3-tip {
+		line-height: 1;
+		font-weight: bold;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 2px;
+	}
+	
+	/* Creates a small triangle extender for the tooltip */
+	.d3-tip:after {
+		box-sizing: border-box;
+		display: inline;
+		font-size: 10px;
+		width: 100%;
+		line-height: 1;
+		color: rgba(0, 0, 0, 0.8);
+		content: "\25BC";
+		position: absolute;
+		text-align: center;
+	}
+	
+	/* Style northward tooltips differenetly */ 
+	.d3-tip.n:after {
+		margin: -1px 0 0 0;
+		top: 100%;
+		left: 0;
+	}
+
 	</style>
 
 </head>
@@ -58,6 +91,7 @@
 	</linearGradient>
 
 	<script src = "http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 	
 	<script>
 		
@@ -111,12 +145,21 @@
 			.domain([0, maxY])
 			.range(["red", "blue"]);
 		*/
+		
+		var tip = d3.tip()
+			.attr('class', 'd3-tip')
+			.offset([-10, 0])
+			.html(function(d) { 
+				return "<span style='color:white'>"+d.y+"</span>"
+				+" infected"; })
 			
 		var canvas = d3.select("body").append("svg")
 			.attr("width", width + padding)
 			.attr("height", height + padding)
 			.append("g")
 			.attr("transform", "translate(35, 35)");
+			
+		canvas.call(tip);
 			
 		// append group for axis
 		var groupX = canvas.append("g")
@@ -148,7 +191,7 @@
 		
 		// specify gradient units are userSpaceOnUse
 		// then define region to apply gradient		
-		var gradient = bars
+		/*var gradient = bars
 			.append("linearGradient")
 			.attr("y1", maxY)
 			.attr("y2", height + padding)
@@ -164,6 +207,7 @@
 		gradient.append("stop")
 			.attr("offset", "1.0")
 			.attr("stop-color", "darkblue");
+		*/
 			
 		bars.append("rect")
 			.attr("x", function (d) { 
@@ -181,13 +225,13 @@
 			/*.attr("fill", function (d) {
 				return color(d);
 			})*/
-			.attr("fill", "url(#gradient)");
+			//.attr("fill", "url(#gradient)");
+			.on('mouseover', tip.show)
+			.on('mouseout', tip.hide);
 			
 			
-	})
+	});
 
-
-	
 	</script>
 	
 	
